@@ -9,37 +9,44 @@ This repository contains the Django backend for an e-commerce application.
 - CORS support
 - SQLite database for development
 
-## Setup
+## Clone and setup
 
-1. Activate the virtual environment:
+1. Clone the repository:
+
+   ```powershell
+   git clone <your-repo-url>
+   cd ecommerse_backend
+   ```
+
+2. Create a virtual environment:
+
+   ```powershell
+   py -m venv myenv
+   ```
+
+3. Activate the virtual environment:
 
    ```powershell
    .\myenv\Scripts\Activate.ps1
    ```
 
-2. Install dependencies if needed:
+4. Install the project dependencies:
 
    ```powershell
    pip install -r requirements.txt
    ```
 
-3. Apply migrations:
+5. Apply the database migrations:
 
    ```powershell
    python myenv\ecomproject\manage.py migrate
    ```
 
-4. Run the development server:
+6. Start the development server:
 
    ```powershell
    python myenv\ecomproject\manage.py runserver
    ```
-
-## Notes
-
-- The project settings use SQLite by default.
-- `CORS_ALLOWED_ORIGINS` is currently empty; add origins or enable `CORS_ALLOW_ALL_ORIGINS` for local testing if needed.
-- JWT settings are configured in `myenv\ecomproject\ecomproject\settings.py`.
 
 ## Useful commands
 
@@ -51,3 +58,10 @@ This repository contains the Django backend for an e-commerce application.
   ```powershell
   python myenv\ecomproject\manage.py test
   ```
+
+## Notes
+
+- The project settings use SQLite by default.
+- `CORS_ALLOWED_ORIGINS` is currently empty; add origins or enable `CORS_ALLOW_ALL_ORIGINS` for local testing if needed.
+- JWT settings are configured in `myenv\ecomproject\ecomproject\settings.py`.
+

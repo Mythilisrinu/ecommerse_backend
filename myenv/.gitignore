@@ -1,0 +1,10 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+# Keep the Django project files trackable, but ignore the virtual environment internals.
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
+bin/
+share/
+.Python
+

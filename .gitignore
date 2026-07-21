@@ -1,0 +1,14 @@
+# Virtual environment files
+myenv/Include/
+myenv/Lib/
+myenv/Scripts/
+myenv/pyvenv.cfg
+myenv/share/
+myenv/.Python
+myenv/bin/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
