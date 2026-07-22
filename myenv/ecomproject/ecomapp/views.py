@@ -97,16 +97,16 @@ def registerUser(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
 class ActivateAccountView(View):
-    def get(self,request,uid64,token):
+    def get(self, request, uidb64, token):
         try:
-            uid = force_str(urlsafe_base64_decode(uid64))
+            uid = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=uid)
-        except Exception as identifier:
+        except Exception:
             user = None
-        if user is not None and generate_token.check_token(user,token):
-            user.is_active=True
+
+        if user is not None and generate_token.check_token(user, token):
+            user.is_active = True
             user.save()
-            message = {"details":"Account is Activated"}
-            return render(request,"activatesuccess.html")
-        else:
-            return render(request,"activatefail.html")
+            return render(request, "activatesuccess.html")
+
+        return render(request, "activatefail.html")
