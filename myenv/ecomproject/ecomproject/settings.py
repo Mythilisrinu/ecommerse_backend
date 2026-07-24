@@ -190,12 +190,13 @@ SIMPLE_JWT = {
 }
 
 # email credentials for sending email
-# Example using a non-Gmail mail provider
+# Configure these with your Gmail address and an app password
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.ethereal.email'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'jon.gerhold@ethereal.email'
-EMAIL_HOST_PASSWORD = 'RGrkrzhTNcRE7UXdtD'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
