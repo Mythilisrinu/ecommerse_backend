@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Products
+from .models import Products,Cart, CartItem
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -91,3 +91,17 @@ class UserSerializerWithToken(UserSerializer):
 
     def get_token(self, obj):
         return MyTokenObtainPairSerializer.get_token(obj)
+
+class CartItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = CartItem
+        fields = "__all__"
+
+class CartSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Cart
+        fields = "__all__"

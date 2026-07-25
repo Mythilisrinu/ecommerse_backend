@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializer import ProductSerializer, MyTokenObtainPairSerializer, UserSerializer, UserSerializerWithToken
-from .models import Products
+from .serializer import ProductSerializer, MyTokenObtainPairSerializer, UserSerializer, UserSerializerWithToken , CartSerializer
+from .models import Products, Cart, CartItem
 from django.contrib.auth.models import User
 
 from django.template.loader import render_to_string
@@ -15,6 +15,7 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import View
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -109,3 +110,63 @@ class ActivateAccountView(View):
             return render(request, "activatesuccess.html")
 
         return render(request, "activatefail.html")
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_cart(request):
+
+    cart, created = Cart.objects.get_or_create(
+        user=request.user
+    )
+
+    serializer = CartSerializer(cart)
+
+    return Response(serializer.data)
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def add_to_cart(request):
+
+    product_id = request.data["product"]
+    quantity = request.data.get("quantity", 1)
+
+    cart, created = Cart.objects.get_or_create(
+        user=request.user
+    )
+
+    item, created = CartItem.objects.get_or_create(
+        cart=cart,
+        product_id=product_id,
+        defaults={"quantity": quantity}
+    )
+
+    if not created:
+        item.quantity = quantity
+        item.save()
+
+    serializer = CartSerializer(cart)
+
+    return Response(serializer.data)
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def remove_from_cart(request, product_id):
+
+    try:
+        cart = Cart.objects.get(user=request.user)
+    except Cart.DoesNotExist:
+        return Response({"detail": "Cart not found"}, status=404)
+
+    try:
+        item = CartItem.objects.get(
+            cart=cart,
+            product_id=product_id
+        )
+    except CartItem.DoesNotExist:
+        return Response({"detail": "Item not found"}, status=404)
+
+    item.delete()
+
+    serializer = CartSerializer(cart)
+
+    return Response(serializer.data)
